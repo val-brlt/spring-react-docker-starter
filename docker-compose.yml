@@ -9,7 +9,6 @@ services:
       dockerfile: demo-backend-spring.Dockerfile
     ports:
       - "8080:8080"
-    command: sh ./docker-entrypoint.sh
     volumes:
       - ./demo-backend-spring:/app
     environment:
