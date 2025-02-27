@@ -1,0 +1,15 @@
+{
+    "Servers": {
+      "1": {
+        "Name": "Demo PostgreSQL",
+        "Group": "Servers",
+        "Host": "demo-bdd",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "demo-admin",
+        "SSLMode": "prefer",
+        "PassFile": "/pgadmin4/pgpass.conf"
+      }
+    }
+  }
+  

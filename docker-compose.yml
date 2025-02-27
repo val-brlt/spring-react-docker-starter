@@ -1,0 +1,87 @@
+version: "3.8"
+
+services:
+
+  demo-backend:
+    container_name: demo-backend
+    build:
+      context: ./demo-backend-spring
+      dockerfile: demo-backend-spring.Dockerfile
+    ports:
+      - "8080:8080"
+    command: sh ./docker-entrypoint.sh
+    volumes:
+      - ./demo-backend-spring:/app
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - POSTGRES_USER=demo-admin
+      - POSTGRES_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://demo-bdd:5432/demo-db
+      - SPRING_DATASOURCE_USERNAME=demo-admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    depends_on:
+      - postegresql_database
+    networks:
+      - demo-network
+    restart: always
+
+
+  demo-frontend:
+    container_name: demo-frontend
+    build:
+      context: ./demo-frontend-react
+      dockerfile: demo-frontend-react.Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./demo-frontend-react:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - demo-backend
+    networks:
+      - demo-network
+
+  postegresql_database:
+    container_name: demo-bdd
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: demo-admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: demo-db
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    networks:
+      - demo-network
+
+  pgadmin:
+    container_name: demo-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin1234
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin:/root/.pgadmin
+      - ./config/servers.json:/pgadmin4/servers.json
+      - ./config/pgpass.conf:/pgadmin4/pgpass.conf
+    networks:
+      - demo-network
+    restart: always
+
+volumes:
+  database-data:
+  pgadmin:
+
+networks:
+  demo-network:
+    driver: bridge
+
