@@ -22,7 +22,7 @@ Before you begin, make sure you have the following installed:
 ### 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/spring-react-docker-starter.git
+git clone https://github.com/val-brlt/spring-react-docker-starter.git
 cd spring-react-docker-starter
 ```
 
