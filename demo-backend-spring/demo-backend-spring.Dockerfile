@@ -15,8 +15,8 @@ COPY --from=deps /root/.m2/repository /root/.m2/repository
 COPY ./ /app
 
 # Ajoute les permissions sur le script d’entrée
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY ./docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 # Active l'entrée du script
 ENTRYPOINT ["/docker-entrypoint.sh"]
